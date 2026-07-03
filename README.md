@@ -2,7 +2,31 @@
 
 Park Herdr panes or whole tabs, free the running process resources, and resume supported agent sessions later without manually remembering session IDs.
 
-This plugin is useful when you keep many agent panes open in [Herdr](https://herdr.dev/) and want tabs to behave like lightweight bookmarks instead of keeping every agent process running.
+## The problem
+
+Agent terminals are useful, but they are not free. If you keep several OpenCode, Claude Code, Codex, or other agent panes running in [Herdr](https://herdr.dev/), each pane can keep a real process, child tools, MCP servers, and memory alive even when the work is idle.
+
+The obvious fix is to close idle panes. The problem is that once you close a pane, it is easy to forget:
+
+- what was running there
+- which project directory it belonged to
+- which Herdr tab/workspace it lived in
+- which native agent session ID you need to resume it later
+
+So people leave everything running just to avoid losing context.
+
+## The solution
+
+Herdr Session Parker lets you treat a Herdr tab like a lightweight bookmark.
+
+When you park a pane or tab, the plugin records what was there, saves the session/cwd/tab metadata, leaves a small marker pane behind, and closes the expensive running process. Later, you can list parked sessions or resume the matching one from the current tab without remembering the session ID yourself.
+
+In short:
+
+```text
+park = remember what was here + free the resources
+resume = bring the saved agent session back when needed
+```
 
 ## What it does
 
