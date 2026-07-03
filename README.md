@@ -150,13 +150,13 @@ Do not publish your local registry file. This repository's `.gitignore` excludes
 
 ## Agent skill
 
-This repo includes an optional OpenCode/agent skill at:
+This repo includes an optional agent skill at:
 
 ```text
 agent-skill/herdr-session-parker/SKILL.md
 ```
 
-Install it for OpenCode-compatible skill loading:
+Install it in an OpenCode-style agent skill directory:
 
 ```bash
 mkdir -p ~/.agents/skills
