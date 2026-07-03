@@ -1,0 +1,36 @@
+id = "herdr-session-parker"
+name = "Herdr Session Parker"
+version = "0.2.0"
+min_herdr_version = "0.7.0"
+description = "Park and resume Herdr panes by remembering tab context, cwd, and supported agent session ids."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "park-current-pane"
+title = "Park current pane"
+contexts = ["pane", "tab", "workspace"]
+command = ["python3", "session_parker.py", "park-current-pane"]
+
+[[actions]]
+id = "park-current-tab"
+title = "Park every pane in current tab"
+contexts = ["pane", "tab", "workspace"]
+command = ["python3", "session_parker.py", "park-current-tab"]
+
+[[actions]]
+id = "resume-current"
+title = "Resume parked session in current tab"
+contexts = ["pane", "tab", "workspace"]
+command = ["python3", "session_parker.py", "resume-current"]
+
+[[actions]]
+id = "list-parked"
+title = "List parked sessions"
+contexts = ["workspace"]
+command = ["python3", "session_parker.py", "list"]
+
+[[actions]]
+id = "snapshot-current"
+title = "Snapshot current pane without closing"
+contexts = ["pane", "tab", "workspace"]
+command = ["python3", "session_parker.py", "snapshot-current"]
