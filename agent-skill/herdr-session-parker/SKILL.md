@@ -40,6 +40,8 @@ herdr plugin action invoke herdr-session-parker.park-current-tab
 herdr plugin action invoke herdr-session-parker.resume-current
 ```
 
+Use plugin actions only when the user truly means the currently focused Herdr tab/pane. For non-current targets, use the direct script with `--pane <pane_id>` so you do not steal focus.
+
 ## Agent workflow
 
 Before parking/resuming:
@@ -57,6 +59,31 @@ For automatic resume, target panes need a supported Herdr `agent_session.value`.
 herdr integration install opencode
 herdr integration status
 ```
+
+## Target non-current panes without changing focus
+
+Preferred workflow when the user names a workspace/tab/pane that is not the current focus:
+
+1. Identify the target from Herdr state:
+
+```bash
+herdr tab list
+herdr pane list
+```
+
+2. Dry-run the exact targeted operation:
+
+```bash
+python3 /path/to/session_parker.py snapshot-current --pane <pane_id> --dry-run
+python3 /path/to/session_parker.py park-current-tab --pane <pane_id> --dry-run
+python3 /path/to/session_parker.py resume-current --pane <pane_id> --dry-run
+```
+
+3. Confirm the dry-run output shows the intended workspace, tab, and pane.
+
+4. Run the same command without `--dry-run` only after the target is confirmed. If a pane is `working`, parking requires explicit user confirmation and `--allow-working`.
+
+Do not focus a tab just to park or resume it. Do not close Herdr tabs as part of parking.
 
 ## Park current pane
 
@@ -76,6 +103,12 @@ herdr plugin action invoke herdr-session-parker.snapshot-current
 herdr plugin action invoke herdr-session-parker.park-current-pane
 ```
 
+For a non-current pane, use:
+
+```bash
+python3 /path/to/session_parker.py park-current-pane --pane <pane_id>
+```
+
 ## Park current tab
 
 If the user asks “park this tab”, use:
@@ -86,12 +119,24 @@ herdr plugin action invoke herdr-session-parker.park-current-tab
 
 This records every pane in the tab, creates one marker pane, and closes the original panes. Unsupported processes become manual-only records.
 
+For a non-current tab, target any pane inside that tab:
+
+```bash
+python3 /path/to/session_parker.py park-current-tab --pane <pane_id>
+```
+
 ## Resume current tab/session
 
 If the user asks “resume this tab”:
 
 ```bash
 herdr plugin action invoke herdr-session-parker.resume-current
+```
+
+For a non-current marker pane:
+
+```bash
+python3 /path/to/session_parker.py resume-current --pane <pane_id>
 ```
 
 Verify:

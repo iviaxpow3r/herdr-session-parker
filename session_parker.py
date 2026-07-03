@@ -420,20 +420,36 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Park/resume Herdr panes and supported agent sessions")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    snapshot = sub.add_parser("snapshot-current", help="Record current pane without closing it")
+    snapshot = sub.add_parser(
+        "snapshot-current",
+        aliases=["snapshot-pane"],
+        help="Record current pane without closing it; pass --pane to target a non-current pane without changing focus",
+    )
     snapshot.add_argument("--pane")
     snapshot.add_argument("--dry-run", action="store_true")
     snapshot.set_defaults(func=snapshot_current)
 
-    park_pane = sub.add_parser("park-current-pane", aliases=["park-current"], help="Record and stop current pane, leaving a lightweight marker pane")
+    park_pane = sub.add_parser(
+        "park-current-pane",
+        aliases=["park-current", "park-pane"],
+        help="Record and stop current pane, leaving a lightweight marker pane; pass --pane to target a non-current pane without changing focus",
+    )
     add_common_park_flags(park_pane)
     park_pane.set_defaults(func=park_current_pane)
 
-    park_tab = sub.add_parser("park-current-tab", help="Record and stop every pane in the current tab, leaving a marker pane")
+    park_tab = sub.add_parser(
+        "park-current-tab",
+        aliases=["park-tab"],
+        help="Record and stop every pane in the target pane's tab, leaving a marker pane; pass --pane to target a non-current tab without changing focus",
+    )
     add_common_park_flags(park_tab)
     park_tab.set_defaults(func=park_current_tab)
 
-    resume = sub.add_parser("resume-current", help="Resume a parked session for the current tab")
+    resume = sub.add_parser(
+        "resume-current",
+        aliases=["resume-pane"],
+        help="Resume a parked session for the current or targeted tab; pass --pane to target a non-current marker pane without changing focus",
+    )
     add_match_flags(resume, current_default=True)
     resume.add_argument("--dry-run", action="store_true")
     resume.set_defaults(func=resume_current)

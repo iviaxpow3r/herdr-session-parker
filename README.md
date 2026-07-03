@@ -131,6 +131,52 @@ python3 session_parker.py park-current-tab --pane w1:p1 --dry-run
 python3 session_parker.py resume-current --pane w1:p2 --session-id ses_abc123 --dry-run
 ```
 
+## Targeting non-current tabs without stealing focus
+
+The Herdr plugin actions operate on the currently focused Herdr context. Use them only when you truly mean “the tab I am in right now.”
+
+When an agent needs to park or resume a different tab, use the direct script with `--pane <pane_id>`. The script resolves the pane's workspace/tab from Herdr state and does not need to focus that tab first.
+
+Recommended non-current workflow:
+
+1. Identify the target from Herdr state:
+
+```bash
+herdr tab list
+herdr pane list
+```
+
+2. Dry-run the exact targeted operation:
+
+```bash
+python3 session_parker.py snapshot-current --pane <pane_id> --dry-run
+python3 session_parker.py park-current-tab --pane <pane_id> --dry-run
+python3 session_parker.py resume-current --pane <pane_id> --dry-run
+```
+
+3. Confirm the dry-run output shows the intended workspace, tab, and pane.
+
+4. Run the same command without `--dry-run` only after confirming the target:
+
+```bash
+python3 session_parker.py park-current-tab --pane <pane_id>
+```
+
+For working panes, parking still requires explicit operator intent:
+
+```bash
+python3 session_parker.py park-current-tab --pane <pane_id> --allow-working
+```
+
+Aliases are available for targeted workflows:
+
+```bash
+python3 session_parker.py snapshot-pane --pane <pane_id> --dry-run
+python3 session_parker.py park-pane --pane <pane_id> --dry-run
+python3 session_parker.py park-tab --pane <pane_id> --dry-run
+python3 session_parker.py resume-pane --pane <pane_id> --dry-run
+```
+
 ## State and privacy
 
 The plugin writes runtime state to:
